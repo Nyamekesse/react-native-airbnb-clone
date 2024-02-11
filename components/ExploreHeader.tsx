@@ -1,5 +1,6 @@
 import Colors from "@/constants/Colors";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import { Link } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
@@ -41,18 +42,21 @@ const categories = [
     icon: "nature-people",
   },
 ];
-
-const ExploreHeader = () => {
+interface Props {
+  onCategoryChanged: (category: string) => void;
+}
+const ExploreHeader = ({ onCategoryChanged }: Props) => {
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
-  const [activeIndex, setActiveIndex] = useState(3);
+  const scrollRef = useRef<ScrollView>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const selectCategory = (index: number) => {
     const selected = itemsRef.current[index];
     setActiveIndex(index);
-    // selected?.measure((x) => {
-    //   scrollRef.current?.scrollTo({ x: x - 16, y: 0, animated: true });
-    // });
-    // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    // onCategoryChanged(categories[index].name);
+    selected?.measure((x) => {
+      scrollRef.current?.scrollTo({ x: x - 16, y: 0, animated: true });
+    });
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onCategoryChanged(categories[index].name);
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -74,12 +78,14 @@ const ExploreHeader = () => {
           </TouchableOpacity>
         </View>
         <ScrollView
+          ref={scrollRef}
           horizontal
           contentContainerStyle={{
             alignItems: "center",
             gap: 30,
             paddingHorizontal: 16,
           }}
+          scrollEnabled={true}
         >
           {categories.map((category, index) => (
             <TouchableOpacity
