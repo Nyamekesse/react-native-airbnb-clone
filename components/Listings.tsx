@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 interface Props {
   listings: any[];
   category: string;
@@ -28,7 +29,11 @@ const Listings = ({ category, listings: items }: Props) => {
   const renderRow: ListRenderItem<Listing> = ({ item }) => (
     <Link href={`/listing/${item.id}`} asChild>
       <TouchableOpacity>
-        <View style={styles.listings}>
+        <Animated.View
+          style={styles.listings}
+          entering={FadeInRight}
+          exiting={FadeOutLeft}
+        >
           <Image source={{ uri: item.medium_url }} style={styles.image} />
           <TouchableOpacity
             style={{ position: "absolute", right: 30, top: 30 }}
@@ -53,7 +58,7 @@ const Listings = ({ category, listings: items }: Props) => {
             <Text style={{ fontFamily: "mon-sb" }}>€ {item.price}</Text>
             <Text style={{ fontFamily: "mon" }}>night</Text>
           </View>
-        </View>
+        </Animated.View>
       </TouchableOpacity>
     </Link>
   );
