@@ -1,7 +1,7 @@
 import { defaultStyles } from "@/constants/Styles";
 import { ListingGeo } from "@/types";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView from "react-native-map-clustering";
 import { Marker } from "react-native-maps";
@@ -17,7 +17,7 @@ const INITIAL_REGION = {
   longitudeDelta: 9,
 };
 
-const ListingsMap = ({ listings }: Props) => {
+const ListingsMap = memo(({ listings }: Props) => {
   const router = useRouter();
   const onMarkerSelected = (item: ListingGeo) => {
     router.push(`/listing/${item.properties.id}`);
@@ -81,7 +81,8 @@ const ListingsMap = ({ listings }: Props) => {
       </MapView>
     </View>
   );
-};
+});
+
 const styles = StyleSheet.create({
   marker: {
     padding: 8,
