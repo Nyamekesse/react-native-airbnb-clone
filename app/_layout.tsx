@@ -1,3 +1,4 @@
+import ModalHeaderText from "@/components/ModalHeaderText";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { useFonts } from "expo-font";
 import { Stack, useRouter } from "expo-router";
@@ -99,6 +100,8 @@ function RootLayoutNav() {
         options={{
           presentation: "transparentModal",
           animation: "fade",
+          headerTransparent: true,
+          headerTitle: () => <ModalHeaderText />,
         }}
       />
     </Stack>
